@@ -1,0 +1,15 @@
+[[plugins]]
+id = "aiu-usage"
+command = ["mirador-aiu"]
+
+[plugins.config]
+aiu_command = ["aiu"]
+poll_seconds = 60
+allow_switch = true
+show_email = false
+
+[layout]
+rows = [
+  { height = 100, panels = [{ widget = "aiu-usage", width = 100 }] },
+]
+

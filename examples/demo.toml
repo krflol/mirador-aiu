@@ -1,0 +1,9 @@
+[[plugins]]
+id = "aiu-usage"
+command = ["mirador-aiu", "--demo"]
+
+[layout]
+rows = [
+  { height = 100, panels = [{ widget = "aiu-usage", width = 100 }] },
+]
+

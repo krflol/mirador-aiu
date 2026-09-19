@@ -1,0 +1,26 @@
+[package]
+name = "mirador-aiu"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.88"
+description = "Claude and Codex usage in a native Mirador external panel"
+license = "MIT"
+repository = "https://github.com/krflol/mirador-aiu"
+readme = "README.md"
+
+[dependencies]
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+clap = { version = "4", features = ["derive"] }
+dirs = "6"
+fs2 = "0.4"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+unicode-width = "0.2"
+
+[dev-dependencies]
+tempfile = "3"
+
+[profile.release]
+lto = "thin"
+strip = true

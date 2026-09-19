@@ -1,0 +1,42 @@
+[
+  {
+    "key": "claude:personal@example.test#demo",
+    "provider": "claude",
+    "email": "personal@example.test",
+    "label": "Personal",
+    "tier": "Max 5x",
+    "active": true,
+    "windows": [
+      {"key": "five_hour", "group": "session", "label": "5h session", "percent": 24, "known": true, "severity": "ok"},
+      {"key": "weekly_all", "group": "weekly", "label": "7d all", "percent": 41, "known": true, "severity": "ok"}
+    ],
+    "login": {"state": "ok"},
+    "recommended": true
+  },
+  {
+    "key": "claude:work@example.test#demo",
+    "provider": "claude",
+    "email": "work@example.test",
+    "label": "Work",
+    "tier": "Pro",
+    "windows": [
+      {"key": "five_hour", "group": "session", "label": "5h session", "percent": 93, "known": true, "severity": "warning"},
+      {"key": "weekly_all", "group": "weekly", "label": "7d all", "percent": 72, "known": true, "severity": "warning"}
+    ],
+    "login": {"state": "ok"}
+  },
+  {
+    "key": "codex:lab@example.test#demo",
+    "provider": "codex",
+    "email": "lab@example.test",
+    "label": "Lab",
+    "tier": "ChatGPT Pro",
+    "active": true,
+    "windows": [
+      {"key": "primary", "group": "session", "label": "5h session", "percent": 12, "known": true, "severity": "ok"},
+      {"key": "secondary", "group": "weekly", "label": "7d all", "percent": 18, "known": true, "severity": "ok"}
+    ],
+    "login": {"state": "ok"},
+    "recommended": true
+  }
+]
