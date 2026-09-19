@@ -12,4 +12,3 @@ show_email = false
 rows = [
   { height = 100, panels = [{ widget = "aiu-usage", width = 100 }] },
 ]
-

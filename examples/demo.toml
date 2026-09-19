@@ -6,4 +6,3 @@ command = ["mirador-aiu", "--demo"]
 rows = [
   { height = 100, panels = [{ widget = "aiu-usage", width = 100 }] },
 ]
-

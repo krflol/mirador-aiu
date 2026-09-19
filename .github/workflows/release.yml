@@ -74,4 +74,3 @@ jobs:
           GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ github.ref_name }}
         run: gh release create "$RELEASE_TAG" dist/* --verify-tag --draft --title "Mirador AIU $RELEASE_TAG" --notes-file "release-notes/$RELEASE_TAG.md"
-

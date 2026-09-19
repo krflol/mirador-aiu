@@ -36,4 +36,3 @@ jobs:
         with:
           key: msrv
       - run: cargo test --locked --all-targets
-

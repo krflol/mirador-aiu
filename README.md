@@ -142,4 +142,3 @@ The canonical interface is [Mirador external-panel protocol v1](https://github.c
 ## License
 
 MIT. AIU and Mirador are separate projects with their own licenses and release lifecycles.
-
