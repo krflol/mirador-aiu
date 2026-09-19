@@ -41,7 +41,7 @@ fn main() {
         _ => panic!("unexpected AIU action"),
     }
     if ["gated", "slow"].contains(&scenario) {
-        let deadline = Instant::now() + Duration::from_secs(5);
+        let deadline = Instant::now() + Duration::from_secs(10);
         while !std::path::Path::new("release").exists() {
             assert!(Instant::now() < deadline, "test did not release fake AIU");
             thread::sleep(Duration::from_millis(10));

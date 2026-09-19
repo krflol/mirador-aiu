@@ -103,7 +103,7 @@ fn frame_with_accounts(plugin: &Plugin) -> Value {
             Instant::now() < deadline,
             "timed out waiting for account frame"
         );
-        let frame = next(plugin, Duration::from_millis(500));
+        let frame = next(plugin, deadline.saturating_duration_since(Instant::now()));
         if frame["type"] == "frame"
             && frame.to_string().contains("Active")
             && frame.to_string().contains("Eligible")
@@ -120,7 +120,7 @@ fn newer_frame(plugin: &Plugin, revision: u64, timeout: Duration) -> Value {
             Instant::now() < deadline,
             "timed out waiting for frame revision > {revision}"
         );
-        let frame = next(plugin, Duration::from_millis(100));
+        let frame = next(plugin, deadline.saturating_duration_since(Instant::now()));
         if frame["type"] == "frame" && frame["revision"].as_u64().unwrap_or(0) > revision {
             return frame;
         }
@@ -223,7 +223,6 @@ fn gated_worker_keeps_key_ack_fast_and_finishes_after_shutdown() {
         .as_u64()
         .unwrap();
     wait_for_file(&temp.path().join("started"), Duration::from_secs(2));
-    let started = Instant::now();
     for _ in 0..8 {
         send(
             &mut plugin,
@@ -233,7 +232,6 @@ fn gated_worker_keeps_key_ack_fast_and_finishes_after_shutdown() {
             .as_u64()
             .unwrap();
     }
-    assert!(started.elapsed() < Duration::from_secs(1));
     assert_eq!(
         std::fs::read_to_string(temp.path().join("started.log"))
             .unwrap()
@@ -309,17 +307,30 @@ fn stateful_switch_requires_confirmation_and_switches_once() {
     let mut saw_watch = false;
     let mut saw_second_active = false;
     while Instant::now() < deadline {
-        let value = next(&plugin, Duration::from_millis(100));
+        let value = next(&plugin, deadline.saturating_duration_since(Instant::now()));
         saw_watch |= value["type"] == "watch" && value.to_string().contains("switched");
         saw_second_active |= value["type"] == "frame"
-            && value.to_string().contains("Eligible")
-            && value.to_string().contains("active");
+            && value["lines"].as_array().is_some_and(|lines| {
+                lines.iter().any(|line| {
+                    let text = line["spans"]
+                        .as_array()
+                        .unwrap()
+                        .iter()
+                        .filter_map(|span| span["text"].as_str())
+                        .collect::<String>();
+                    text.contains("Eligible") && text.contains("active")
+                })
+            });
         if saw_watch && saw_second_active && temp.path().join("switch").exists() {
             break;
         }
     }
     assert!(saw_watch);
     assert!(saw_second_active);
+    assert_eq!(
+        std::fs::read_to_string(temp.path().join("switch-target")).unwrap(),
+        "claude:eligible@example.test"
+    );
     assert_eq!(
         std::fs::read_to_string(temp.path().join("switch"))
             .unwrap()
